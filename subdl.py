@@ -42,10 +42,17 @@ def main():
     id_list = []
     filenames = dict()
     for sub in subs:
+        sub_name = get_filename(sub)
+        #subtitle already in directory
+        if sub_name in os.listdir():
+            continue
         data = ost.search_subtitles([sub])
+        #no sub found
+        if len(data) == 0:
+            continue
         sub_id = data[0]["IDSubtitleFile"]
         id_list.append(int(sub_id))
-        filenames[sub_id] = get_filename(sub)
+        filenames[sub_id] = sub_name
     for file in id_list:
         x = ost.download_subtitles([file], override_filenames = filenames)
         
